@@ -5,7 +5,7 @@ WORKDIR /app/
 COPY requirements.txt /app/
 RUN pip install -r ./requirements.txt
 
-COPY main.py __init__.py /app/
+COPY main.py __init__.py train_model.py update_model.py /app/
 
 # ENTRYPOINT /bin/bash
 EXPOSE 5000

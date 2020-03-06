@@ -1,4 +1,4 @@
-FROM fernandomir/uwsgi-nginx-flask
+FROM fernandomir/uwsgi-nginx-flask:python3.6
 
 WORKDIR /app/
 
@@ -7,4 +7,4 @@ RUN pip install -r ./requirements.txt
 
 ENV ENVIRONMENT production
 
-COPY main.py __init__.py /app/
+COPY main.py __init__.py train_model.py update_model.py /app/
