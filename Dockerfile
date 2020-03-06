@@ -1,4 +1,4 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.6
+FROM fernandomir/uwsgi-nginx-flask
 
 WORKDIR /app/
 
