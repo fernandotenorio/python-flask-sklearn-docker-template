@@ -4,6 +4,9 @@ WORKDIR /app/
 
 COPY requirements.txt /app/
 RUN pip install -r ./requirements.txt
+RUN mkdir data/
+RUN mkdir data_proc/
+RUN mkdir models/
 
 ENV ENVIRONMENT production
 
