@@ -93,15 +93,22 @@ def get_prediction():
     return jsonify(prediction.tolist())
 
 
+@app.route('/prediction/api/v1.0/validate', methods=['GET'])
+def validate_model():
+    print('Validando novo modelo...')
+    return jsonify({'status': 'ok'})
 
-# @app.route('/prediction/api/v1.0/some_prediction', methods=['GET'])
-# def get_prediction2():
-#     feature1 = float(request.args.get('f1'))
-#     feature2 = float(request.args.get('f2'))
-#     feature3 = float(request.args.get('f3'))
-#     loaded_model = pickle.load(open('some_model.pkl', 'rb'))
-#     prediction = loaded_model.predict([[feature1, feature2, feature3]])
-#     return str(prediction)
+
+@app.route('/prediction/api/v1.0/restore', methods=['GET'])
+def restore_model():
+    print('Usando modelo anterior...')
+    return jsonify({'status': 'ok'})
+
+
+@app.route('/prediction/api/v1.0/setnewmodel', methods=['GET'])
+def set_model():
+    print('Usando novo modelo...')
+    return jsonify({'status': 'ok'})
 
 
 if __name__ == '__main__':
