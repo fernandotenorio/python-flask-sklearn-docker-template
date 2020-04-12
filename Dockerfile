@@ -7,6 +7,7 @@ RUN pip install -r ./requirements.txt
 RUN mkdir data/
 RUN mkdir data_proc/
 RUN mkdir models/
+RUN mkdir models/model_api
 
 ENV ENVIRONMENT production
 

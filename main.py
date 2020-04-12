@@ -4,10 +4,12 @@ from flask import Flask
 from flask import request, jsonify
 import pandas as pd
 from sklearn import linear_model
-import pickle
+import joblib
 from flask import abort
 import json
 import train_model
+import shutil
+from glob import glob
 
 
 app = Flask(__name__)
@@ -60,7 +62,7 @@ def proc_data():
 @app.route('/prediction/api/v1.0/train', methods=['POST'])
 def train():
     fl = train_model.train()
-    return jsonify({'msg': 'modelo salvo em {}'.format(fl)})
+    return jsonify({'model_path': fl})
 
 
 @app.route('/prediction/api/v1.0/predict', methods=['POST'])
@@ -82,8 +84,10 @@ def get_prediction():
     
     data = pd.DataFrame(data)
     model = None
-    try:
-        model = pickle.load(open('models/model.pkl', 'rb'))
+    model_path = glob('models/model_api/*.pkl')[0]
+
+    try:        
+        model = joblib.load(open(model_path, 'rb'))
     except:
         return jsonify({'msg': 'Modelo nao encontrado'})
 
@@ -105,10 +109,23 @@ def restore_model():
     return jsonify({'status': 'ok'})
 
 
-@app.route('/prediction/api/v1.0/setnewmodel', methods=['GET'])
+@app.route('/prediction/api/v1.0/setnewmodel', methods=['POST'])
 def set_model():
-    print('Usando novo modelo...')
-    return jsonify({'status': 'ok'})
+    if not request.json or 'model_path' not in request.json:
+        abort(400)
+
+    model_path = request.json['model_path']
+
+    # remove folder com modelo anterior
+    folder = 'models/model_api'
+    shutil.rmtree(folder)
+
+    # cria folder com novo modelo
+    os.makedirs(folder)
+
+    # copia modelo para novo dir
+    shutil.copy(model_path, folder)
+    return jsonify({'msg': 'modelo salvo em {}'.format(folder)})
 
 
 if __name__ == '__main__':
